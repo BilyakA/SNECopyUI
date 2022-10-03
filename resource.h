@@ -1,11 +1,14 @@
-#pragma once
-
+//{{NO_DEPENDENCIES}}
+// Microsoft Visual C++ generated include file.
+// Used by ExplorerDataProvider.rc
+//
 #define IDS_EXPLORE                     103
 #define IDS_OPEN                        104
 #define IDS_GROUPBYSIDES                105
 #define IDS_EXPLORE_HELP                106
 #define IDS_OPEN_HELP                   107
 #define IDS_ONE                         108
+#define IDR_ASSET1                      108
 #define IDS_TWO                         109
 #define IDS_THREE                       110
 #define IDS_FOUR                        111
@@ -42,3 +45,14 @@
 #define IDS_SETTING1_TT                 141
 #define IDS_SETTING2_TT                 142
 #define IDS_SETTING3_TT                 143
+
+// Next default values for new objects
+// 
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_NEXT_RESOURCE_VALUE        109
+#define _APS_NEXT_COMMAND_VALUE         40001
+#define _APS_NEXT_CONTROL_VALUE         1001
+#define _APS_NEXT_SYMED_VALUE           101
+#endif
+#endif

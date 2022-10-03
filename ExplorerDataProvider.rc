@@ -1,11 +1,64 @@
+// Microsoft Visual C++ generated resource script.
+//
 #include "resource.h"
 
-#include "Windows.h"
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
 
-LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United Kingdom) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
 #pragma code_page(1252)
 
-STRINGTABLE 
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RCDATA
+//
+
+IDR_ASSET1              RCDATA                  "assets\\video.mp4"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
 BEGIN
     IDS_EXPLORE             "Explore"
     IDS_OPEN                "Open"
@@ -18,7 +71,7 @@ BEGIN
     IDS_FOUR                "Four"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FIVE                "Five"
     IDS_SIX                 "Six"
@@ -38,7 +91,7 @@ BEGIN
     IDS_GROUPBYLEVEL        "Group by Level"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECTANGLE           "Rectangle"
     IDS_TRIANGLE            "Triangle"
@@ -57,3 +110,19 @@ BEGIN
     IDS_SETTING2_TT         "Modify setting 2."
     IDS_SETTING3_TT         "Modify setting 3."
 END
+
+#endif    // English (United Kingdom) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
