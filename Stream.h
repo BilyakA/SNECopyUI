@@ -2,11 +2,11 @@
 
 #include <ShlObj.h>
 
-class Stream : public IStream
+class CStream : public IStream
 {
 public:
-    explicit Stream();
-    virtual ~Stream();
+    explicit CStream();
+    virtual ~CStream();
 
     // IUnknown
     IFACEMETHODIMP QueryInterface(REFIID riid, void** ppv);

@@ -34,3 +34,7 @@ DEFINE_PROPERTYKEY(PKEY_Microsoft_SDKSample_NumberOfSides, 0xdadd3288, 0x380, 0x
 // name="Microsoft.SDKSample.DirectoryLevel"
 // {581CF603-2925-4acf-BB5A-3D3EB39EACD3}
 DEFINE_PROPERTYKEY(PKEY_Microsoft_SDKSample_DirectoryLevel, 0x581cf603, 0x2925, 0x4acf, 0xbb, 0x5a, 0x3d, 0x3e, 0xb3, 0x9e, 0xac, 0xd3, 3);
+
+// {4F74D1CF-680C-4EA3-8020-4BDA6792DA3C} IRT_DATA
+// this is resource GUID for IStream
+const GUID GUID_StreamResource = { 0x4F74D1CF, 0x680C, 0x4EA3, 0x80, 0x20, 0x4B, 0xDA, 0x67, 0x92, 0xDA, 0x3C };

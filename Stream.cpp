@@ -7,7 +7,7 @@
 
 #define SLEEP_MS 10
 
-Stream::Stream()
+CStream::CStream()
     : IStream()
     , p_stream(nullptr)
     , m_cRef(1)
@@ -21,26 +21,26 @@ Stream::Stream()
 
     p_stream = ::SHCreateMemStream((LPBYTE)::LockResource(myResourceData), ::SizeofResource(g_hInst, myResource));
 }
-Stream::~Stream()
+CStream::~CStream()
 {
     if (p_stream)
         p_stream->Release();
 }
-IFACEMETHODIMP Stream::QueryInterface(REFIID riid, void** ppv)
+IFACEMETHODIMP CStream::QueryInterface(REFIID riid, void** ppv)
 {
     static const QITAB qit[] =
     {
-        QITABENT(Stream, ISequentialStream),
-        QITABENT(Stream, IStream),
+        QITABENT(CStream, ISequentialStream),
+        QITABENT(CStream, IStream),
         { 0 },
     };
     return ::QISearch(this, qit, riid, ppv);
 }
-IFACEMETHODIMP_(ULONG) Stream::AddRef()
+IFACEMETHODIMP_(ULONG) CStream::AddRef()
 {
     return InterlockedIncrement(&m_cRef);
 }
-IFACEMETHODIMP_(ULONG) Stream::Release()
+IFACEMETHODIMP_(ULONG) CStream::Release()
 {
     long cRef = InterlockedDecrement(&m_cRef);
     if (0 == cRef)
@@ -49,57 +49,57 @@ IFACEMETHODIMP_(ULONG) Stream::Release()
     }
     return cRef;
 }
-IFACEMETHODIMP Stream::Read(void* pv, ULONG cb, ULONG* pcbRead)
+IFACEMETHODIMP CStream::Read(void* pv, ULONG cb, ULONG* pcbRead)
 {
     ::Sleep(SLEEP_MS);
     return p_stream->Read(pv, cb, pcbRead);
 }
-IFACEMETHODIMP Stream::Write(const void* pv, ULONG cb, ULONG* pcbWritten)
+IFACEMETHODIMP CStream::Write(const void* pv, ULONG cb, ULONG* pcbWritten)
 {
     ::Sleep(SLEEP_MS);
     return p_stream->Write(pv, cb, pcbWritten);
 }
-IFACEMETHODIMP Stream::Seek(LARGE_INTEGER dlibMove, DWORD dwOrigin, ULARGE_INTEGER* plibNewPosition)
+IFACEMETHODIMP CStream::Seek(LARGE_INTEGER dlibMove, DWORD dwOrigin, ULARGE_INTEGER* plibNewPosition)
 {
     ::Sleep(SLEEP_MS);
     return p_stream->Seek(dlibMove, dwOrigin, plibNewPosition);
 }
-IFACEMETHODIMP Stream::SetSize(ULARGE_INTEGER libNewSize)
+IFACEMETHODIMP CStream::SetSize(ULARGE_INTEGER libNewSize)
 {
     ::Sleep(SLEEP_MS);
     return p_stream->SetSize(libNewSize);
 }
-IFACEMETHODIMP Stream::CopyTo(IStream* pstm, ULARGE_INTEGER cb, ULARGE_INTEGER* pcbRead, ULARGE_INTEGER* pcbWritten)
+IFACEMETHODIMP CStream::CopyTo(IStream* pstm, ULARGE_INTEGER cb, ULARGE_INTEGER* pcbRead, ULARGE_INTEGER* pcbWritten)
 {
     ::Sleep(SLEEP_MS);
     return p_stream->CopyTo(pstm, cb, pcbRead, pcbWritten);
 }
-IFACEMETHODIMP Stream::Commit(DWORD grfCommitFlags)
+IFACEMETHODIMP CStream::Commit(DWORD grfCommitFlags)
 {
     ::Sleep(SLEEP_MS);
     return p_stream->Commit(grfCommitFlags);
 }
-IFACEMETHODIMP Stream::Revert(void)
+IFACEMETHODIMP CStream::Revert(void)
 {
     ::Sleep(SLEEP_MS);
     return p_stream->Revert();
 }
-IFACEMETHODIMP Stream::LockRegion(ULARGE_INTEGER libOffset, ULARGE_INTEGER cb, DWORD dwLockType)
+IFACEMETHODIMP CStream::LockRegion(ULARGE_INTEGER libOffset, ULARGE_INTEGER cb, DWORD dwLockType)
 {
     ::Sleep(SLEEP_MS);
     return p_stream->LockRegion(libOffset, cb, dwLockType);
 }
-IFACEMETHODIMP Stream::UnlockRegion(ULARGE_INTEGER libOffset, ULARGE_INTEGER cb, DWORD dwLockType)
+IFACEMETHODIMP CStream::UnlockRegion(ULARGE_INTEGER libOffset, ULARGE_INTEGER cb, DWORD dwLockType)
 {
     ::Sleep(SLEEP_MS);
     return p_stream->UnlockRegion(libOffset, cb, dwLockType);
 }
-IFACEMETHODIMP Stream::Stat(STATSTG* pstatstg, DWORD grfStatFlag)
+IFACEMETHODIMP CStream::Stat(STATSTG* pstatstg, DWORD grfStatFlag)
 {
     ::Sleep(SLEEP_MS);
     return p_stream->Stat(pstatstg, grfStatFlag);
 }
-IFACEMETHODIMP Stream::Clone(IStream** ppstm)
+IFACEMETHODIMP CStream::Clone(IStream** ppstm)
 {
     ::Sleep(SLEEP_MS);
     return p_stream->Clone(ppstm);

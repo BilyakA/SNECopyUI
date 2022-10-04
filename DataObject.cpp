@@ -6,8 +6,8 @@
 #include "resource.h"
 #include "Utils.h"
 
-CLIPFORMAT DataObject::s_FILEDESCRIPTORW = static_cast<CLIPFORMAT>(::RegisterClipboardFormat(CFSTR_FILEDESCRIPTORW));
-CLIPFORMAT DataObject::s_FILECONTENTS = static_cast<CLIPFORMAT>(::RegisterClipboardFormat(CFSTR_FILECONTENTS));
+CLIPFORMAT CDataObject::s_FILEDESCRIPTORW = static_cast<CLIPFORMAT>(::RegisterClipboardFormat(CFSTR_FILEDESCRIPTORW));
+CLIPFORMAT CDataObject::s_FILECONTENTS = static_cast<CLIPFORMAT>(::RegisterClipboardFormat(CFSTR_FILECONTENTS));
 
 HRESULT CreateHGlobalFromBlob(const void* pvData, SIZE_T cbData, UINT uFlags, HGLOBAL* phglob)
 {
@@ -30,7 +30,7 @@ HRESULT CreateHGlobalFromBlob(const void* pvData, SIZE_T cbData, UINT uFlags, HG
     return hglob ? S_OK : E_OUTOFMEMORY;
 }
 
-DataObject::DataObject(CFolderViewImplFolder* const parent, const UINT cidl, PCUITEMID_CHILD_ARRAY apidl)
+CDataObject::CDataObject(CFolderViewImplFolder* const parent, const UINT cidl, PCUITEMID_CHILD_ARRAY apidl)
     : IDataObject()
     , p_parent(parent)
     , m_cRef(1)
@@ -87,7 +87,7 @@ DataObject::DataObject(CFolderViewImplFolder* const parent, const UINT cidl, PCU
     }
 }
 
-DataObject::~DataObject()
+CDataObject::~CDataObject()
 {
     for (size_t i = 0; i < m_pidlList.size(); i++)
     {
@@ -98,22 +98,22 @@ DataObject::~DataObject()
         ::CoTaskMemFree(reinterpret_cast<LPVOID>(p_FileGroupDescriptor));
 }
 
-IFACEMETHODIMP DataObject::QueryInterface(REFIID riid, void** ppv)
+IFACEMETHODIMP CDataObject::QueryInterface(REFIID riid, void** ppv)
 {
     static const QITAB qit[] =
     {
-        QITABENT(DataObject, IDataObject),
+        QITABENT(CDataObject, IDataObject),
         { 0 },
     };
     return ::QISearch(this, qit, riid, ppv);
 }
 
-IFACEMETHODIMP_(ULONG) DataObject::AddRef()
+IFACEMETHODIMP_(ULONG) CDataObject::AddRef()
 {
     return InterlockedIncrement(&m_cRef);
 }
 
-IFACEMETHODIMP_(ULONG) DataObject::Release()
+IFACEMETHODIMP_(ULONG) CDataObject::Release()
 {
     long cRef = InterlockedDecrement(&m_cRef);
     if (0 == cRef)
@@ -123,7 +123,7 @@ IFACEMETHODIMP_(ULONG) DataObject::Release()
     return cRef;
 }
 
-IFACEMETHODIMP DataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
+IFACEMETHODIMP CDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 {
     HRESULT hr;
     ZeroMemory(pmedium, sizeof(*pmedium));
@@ -135,7 +135,7 @@ IFACEMETHODIMP DataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
             return DV_E_TYMED;
 
         //// Common sense tells that we should only accept -1 meaning
-        //// format is about all the data stored. But default explorer DataObject accepts
+        //// format is about all the data stored. But default explorer CDataObject accepts
         //// any lindex values still returning same info about all objects.
         //// We will stick to the default behavior.
         //if (pformatetcIn->lindex != -1)
@@ -158,7 +158,7 @@ IFACEMETHODIMP DataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 
         // We should not accept -1 here since caller should be very explicit about
         // which exact element index is requested. This is default Explorer's
-        // DataObject behavior.
+        // CDataObject behavior.
         if ((pformatetcIn->lindex < 0) || (pformatetcIn->lindex >= m_pidlList.size()))
             return DV_E_LINDEX;
 
@@ -196,15 +196,15 @@ IFACEMETHODIMP DataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
     return DV_E_FORMATETC;
 }
 
-IFACEMETHODIMP DataObject::GetDataHere(FORMATETC* pformatetc, STGMEDIUM* pmedium)
+IFACEMETHODIMP CDataObject::GetDataHere(FORMATETC* pformatetc, STGMEDIUM* pmedium)
 {
     return E_NOTIMPL;
 }
 
-IFACEMETHODIMP DataObject::QueryGetData(FORMATETC* pformatetc)
+IFACEMETHODIMP CDataObject::QueryGetData(FORMATETC* pformatetc)
 {
     // lindex value is not checked within QueryGetData for default Explorer's
-    // DataObject. We will stick to the default behavior.
+    // CDataObject. We will stick to the default behavior.
     if (pformatetc->cfFormat == s_FILEDESCRIPTORW)
     {
         if (pformatetc->dwAspect != DVASPECT_CONTENT)
@@ -225,19 +225,19 @@ IFACEMETHODIMP DataObject::QueryGetData(FORMATETC* pformatetc)
     return DV_E_FORMATETC;
 }
 
-IFACEMETHODIMP DataObject::GetCanonicalFormatEtc(FORMATETC* pformatectIn, FORMATETC* pformatetcOut)
+IFACEMETHODIMP CDataObject::GetCanonicalFormatEtc(FORMATETC* pformatectIn, FORMATETC* pformatetcOut)
 {
     *pformatetcOut = *pformatectIn;
     pformatetcOut->ptd = NULL;
     return DATA_S_SAMEFORMATETC;
 }
 
-IFACEMETHODIMP DataObject::SetData(FORMATETC* pformatetc, STGMEDIUM* pmedium, BOOL fRelease)
+IFACEMETHODIMP CDataObject::SetData(FORMATETC* pformatetc, STGMEDIUM* pmedium, BOOL fRelease)
 {
     return E_NOTIMPL;
 }
 
-IFACEMETHODIMP DataObject::EnumFormatEtc(DWORD dwDirection, IEnumFORMATETC** ppenumFormatEtc)
+IFACEMETHODIMP CDataObject::EnumFormatEtc(DWORD dwDirection, IEnumFORMATETC** ppenumFormatEtc)
 {
     if (dwDirection == DATADIR_GET)
     {
@@ -267,17 +267,17 @@ IFACEMETHODIMP DataObject::EnumFormatEtc(DWORD dwDirection, IEnumFORMATETC** ppe
     return E_NOTIMPL;
 }
 
-IFACEMETHODIMP DataObject::DAdvise(FORMATETC* pformatetc, DWORD advf, IAdviseSink* pAdvSink, DWORD* pdwConnection)
+IFACEMETHODIMP CDataObject::DAdvise(FORMATETC* pformatetc, DWORD advf, IAdviseSink* pAdvSink, DWORD* pdwConnection)
 {
     return OLE_E_ADVISENOTSUPPORTED;
 }
 
-IFACEMETHODIMP DataObject::DUnadvise(DWORD dwConnection)
+IFACEMETHODIMP CDataObject::DUnadvise(DWORD dwConnection)
 {
     return OLE_E_ADVISENOTSUPPORTED;
 }
 
-IFACEMETHODIMP DataObject::EnumDAdvise(IEnumSTATDATA** ppenumAdvise)
+IFACEMETHODIMP CDataObject::EnumDAdvise(IEnumSTATDATA** ppenumAdvise)
 {
     return OLE_E_ADVISENOTSUPPORTED;
 }

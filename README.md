@@ -1,63 +1,22 @@
----
-page_type: sample
-languages:
-- cpp
-products:
-- windows-api-win32
-urlFragment: explorerdataprovider
-extendedZipContent:
-- path: LICENSE
-  target: LICENSE
-description: "Implements a shell namespace extension, including context menus and custom tasks in the browser."
----
 
-Explorer Data Provider Sample
+Minimal reproducible example for https://stackoverflow.com/q/73938149
 ================================
-This sample demonstrates how to implement a shell namespace extension, including context menu
-behavior and custom tasks in the browser.
+In order to see the problem:
 
-Sample Language Implementations
-===============================
-C++
+1. build, register NSE as-is and copy any file from it (folder copy is not supported) to local filesystem.
+You will see old-style copy dialog (as in Win XP).
+![IDataObject copy UI](https://i.stack.imgur.com/kwAkP.png)
 
-Files
-=============================================
-* Category.cpp
-* Category.h
-* ContextMenu.cpp
-* Dll.cpp
-* ExplorerDataProvider.cpp
-* ExplorerDataProvider.def
-* ExplorerDataProvider.propdesc
-* ExplorerDataProvider.rc
-* ExplorerDataProvider.sln
-* ExplorerDataProvider.vcproj
-* fvcommands.cpp
-* fvcommands.h
-* Guid.h
-* resource.h
-* Utils.cpp
-* Utils.h
+2. Edit `ExplorerDataProvider.cpp:607` : uncomment `return E_NOINTERFACE;`. This will disable use of `IDataObject`.
 
+3. build and copy any file from NSE. You will see new-style copy dialog (as in Win >Vista).
+![ITransferSource copy UI](https://i.stack.imgur.com/I2BEa.png)
 
-To build the sample using the command prompt:
-=============================================
-1. Open the Command Prompt window and navigate to the ExplorerDataProvider directory.
-2. Type msbuild ExplorerDataProvider.sln.
+Some notes:
+* Tested under Windows 11 21H2 64bit
 
+* Accessing the file via `IStream` is done intentionally slow (via `Sleep`) because otherwise the copy  process was too fast for old-style dialog to appear.
 
-To build the sample using Visual Studio (preferred method):
-===========================================================
-1. Open Windows Explorer and navigate to the ExplorerDataProvider directory.
-2. Double-click the icon for the ExplorerDataProvider.sln file to open the file in Visual Studio.
-3. In the Build menu, select Build Solution. The DLL will be built in the default \Debug or \Release directory.
-
-
-To run the sample:
-=================
-1. Navigate to the directory that contains the new .DLL and .propdesc file using the command prompt.
-2. Type "regsvr32.exe ExplorerDataProvider.dll" at the command line.
-   1. If you run this command from an elevated command prompt, the self-registration will also register
-      the .propdesc file automatically.  If it is run from a non-elevated command prompt then the
-      namespace extension will still work but without custom property functionality.
-3. Open the My Computer folder and browse the new namespace extension present there.
+* Code is far away from production quality. This is just a minimal reproducible example of the 
+ problem based on the microsot sample.
+https://github.com/microsoft/Windows-classic-samples/tree/main/Samples/Win7Samples/winui/shell/shellextensibility/explorerdataprovider

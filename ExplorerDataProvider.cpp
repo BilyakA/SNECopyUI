@@ -24,6 +24,8 @@
 #include "ExplorerDataProvider.h"
 #include "DataObject.h"
 #include "Stream.h"
+#include "Transfer.h"
+#include "TransferMediumItem.h"
 
 HRESULT CFolderViewImplFolder_CreateInstance(REFIID riid, void **ppv)
 {
@@ -209,13 +211,29 @@ HRESULT CFolderViewImplFolder::BindToObject(PCUIDLIST_RELATIVE pidl,
                         {
                             if (riid == IID_IStream)
                             {
-                                Stream* stream = new (std::nothrow) Stream();
-                                return stream->QueryInterface(riid, ppv);
+                                CStream* pStream = new (std::nothrow) CStream();
+                                hr = pStream ? S_OK : E_OUTOFMEMORY;
+                                if (SUCCEEDED(hr))
+                                {
+                                    hr = pStream->QueryInterface(riid, ppv);
+                                    pStream->Release();
+                                }
                             }
-
-                            // If we're reached the end of the idlist, return the interfaces we support for this item.
-                            // Other potential handlers to return include IPropertyStore, IStream, IStorage, etc.
-                            hr = pCFolderViewImplFolder->QueryInterface(riid, ppv);
+                            else if (riid == IID_ITransferMediumItem)
+                            {
+                                CTransferMediumItem* pTransferMediumItem = new (std::nothrow) CTransferMediumItem(pidlBind);
+                                hr = pTransferMediumItem ? S_OK : E_OUTOFMEMORY;
+                                if (SUCCEEDED(hr))
+                                {
+                                    hr = pTransferMediumItem->QueryInterface(riid, ppv);
+                                    pTransferMediumItem->Release();
+                                }
+                            }
+                            else {
+                                // If we're reached the end of the idlist, return the interfaces we support for this item.
+                                // Other potential handlers to return include IPropertyStore, IStream, IStorage, etc.
+                                hr = pCFolderViewImplFolder->QueryInterface(riid, ppv);
+                            }
                         }
                         else
                         {
@@ -497,6 +515,16 @@ HRESULT CFolderViewImplFolder::CreateViewObject(HWND hwnd, REFIID riid, void **p
             pProvider->Release();
         }
     }
+    else if (riid == IID_ITransferSource)
+    {
+        CTransfer* pTransfer = new (std::nothrow) CTransfer(this);
+        hr = pTransfer ? S_OK : E_OUTOFMEMORY;
+        if (SUCCEEDED(hr))
+        {
+            hr = pTransfer->QueryInterface(riid, ppv);
+            pTransfer->Release();
+        }
+    }
     return hr;
 }
 
@@ -576,7 +604,9 @@ HRESULT CFolderViewImplFolder::GetUIObjectOf(HWND hwnd, UINT cidl, PCUITEMID_CHI
     }
     else if (riid == IID_IDataObject)
     {
-        IDataObject* dataObject = new (std::nothrow) DataObject(this, cidl, apidl);
+        //return E_NOINTERFACE;
+
+        CDataObject* dataObject = new (std::nothrow) CDataObject(this, cidl, apidl);
         return ::SHCreateDataObject(m_pidl, cidl, apidl, dataObject, riid, ppv);
     }
     else if (riid == IID_IQueryAssociations)

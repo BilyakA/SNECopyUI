@@ -6,11 +6,11 @@
 
 #include "ExplorerDataProvider.h"
 
-class DataObject : public IDataObject
+class CDataObject : public IDataObject
 {
 public:
-    explicit DataObject(CFolderViewImplFolder* const parent, const UINT cidl, PCUITEMID_CHILD_ARRAY apidl);
-    virtual ~DataObject();
+    explicit CDataObject(CFolderViewImplFolder* const parent, const UINT cidl, PCUITEMID_CHILD_ARRAY apidl);
+    virtual ~CDataObject();
 
     // IUnknown
     IFACEMETHODIMP QueryInterface(REFIID riid, void** ppv);
