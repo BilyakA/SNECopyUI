@@ -12,11 +12,11 @@ CTransfer::CTransfer(CFolderViewImplFolder* const parent)
     , m_SinkMap()
     , m_LastUsedSinkMapCookie(0)
 {
-
+    p_parent->AddRef();
 }
 CTransfer::~CTransfer()
 {
-
+    p_parent->Release();
 }
 IFACEMETHODIMP CTransfer::QueryInterface(REFIID riid, void** ppv)
 {

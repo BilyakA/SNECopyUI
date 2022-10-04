@@ -15,10 +15,12 @@ CShellItemResources::CShellItemResources(CFolderViewImplFolder* const parent, PC
     , p_parent(parent)
     , p_pidl(::ILCloneChild(pidl))
 {
-
+    p_parent->AddRef();
 }
 CShellItemResources::~CShellItemResources()
 {
+    p_parent->Release();
+
     if (p_pidl)
         ::ILFree(p_pidl);
 }

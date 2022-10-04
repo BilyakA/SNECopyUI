@@ -38,6 +38,8 @@ CDataObject::CDataObject(CFolderViewImplFolder* const parent, const UINT cidl, P
     , m_FileGroupDescriptorSize(0)
     , p_FileGroupDescriptor(nullptr)
 {
+    p_parent->AddRef();
+
     m_pidlList.reserve(cidl);
 
     for (UINT i = 0; i < cidl; i++)
@@ -89,6 +91,8 @@ CDataObject::CDataObject(CFolderViewImplFolder* const parent, const UINT cidl, P
 
 CDataObject::~CDataObject()
 {
+    p_parent->Release();
+
     for (size_t i = 0; i < m_pidlList.size(); i++)
     {
         ::ILFree(m_pidlList[i]);
