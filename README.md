@@ -3,14 +3,16 @@ Minimal reproducible example for https://stackoverflow.com/q/73938149
 ================================
 In order to see the problem:
 
-1. build, register NSE as-is and copy any file from it (folder copy is not supported) to local filesystem.
+1. build x64 Release or Debug, register NSE as-is and copy any file from it (folder copy is not supported) to local filesystem.
 You will see old-style copy dialog (as in Win XP).
-![IDataObject copy UI](https://i.stack.imgur.com/kwAkP.png)
+
+    ![IDataObject copy UI](https://i.stack.imgur.com/kwAkP.png)
 
 2. Edit `ExplorerDataProvider.cpp:607` : uncomment `return E_NOINTERFACE;`. This will disable use of `IDataObject`.
 
-3. build and copy any file from NSE. You will see new-style copy dialog (as in Win >Vista).
-![ITransferSource copy UI](https://i.stack.imgur.com/I2BEa.png)
+3. build x64 Release or Debug, and copy any file from NSE. You will see new-style copy dialog (as in Win >Vista).
+
+    ![ITransferSource copy UI](https://i.stack.imgur.com/I2BEa.png)
 
 Some notes:
 * Tested under Windows 11 21H2 64bit
